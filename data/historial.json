@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "nombre": "Comida",
+        "monto": 15000,
+        "estado": false
+    },
+    {
+        "id": 2,
+        "nombre": "Alquiler",
+        "monto": 40000,
+        "estado": false
+    },
+    {
+        "id": 3,
+        "nombre": "Cable",
+        "monto": 5000,
+        "estado": true
+    },
+    {
+        "id": 4,
+        "nombre": "Celular",
+        "monto": 2000,
+        "estado": true
+    }
+]
+
