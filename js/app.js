@@ -23,7 +23,7 @@ class UI {
       
       const value = this.presupuestoInput.value;
       var valorStorage = localStorage.setItem("presupuesto", value);
-      if(value === '' || value < 0){
+      if(value === '' || value <= 0){
         this.presupuestoError.classList.add('showItem');
         this.presupuestoError.innerHTML = `<p>El valor no puede estar vacio o negativo!</p>`;
         const self = this;
@@ -82,7 +82,7 @@ class UI {
   enviarGastoForm(){
     const gastoValue = this.gastoInput.value;
     const amountValue = this.montoInput.value;
-    if(gastoValue === '' || amountValue === '' || amountValue < 0){
+    if(gastoValue === '' || amountValue === '' || amountValue <= 0){
       this.gastoError.classList.add('showItem');
       this.gastoError.innerHTML = `<p>El valor no puede estar vacio o negativo!</p>`;
       const self = this;
@@ -330,7 +330,7 @@ btnBorrar.addEventListener('click', () => {
 var contenido = document.querySelector('#contenido')
 
         function traer() {
-            fetch('../data/historial.json')
+            fetch('./../data/historial.json')
                 .then(res => res.json())
                 .then(datos => {
                     // console.log(datos)
