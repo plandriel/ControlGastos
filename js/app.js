@@ -16,11 +16,8 @@ class UI {
     this.itemID = 0;
   }
 
-  
-  
   // enviar presupuesto en caso de que no sea un numero negativo o este vacio el ingreso.
   enviarPresupuesto(){
-      
       const value = this.presupuestoInput.value;
       var valorStorage = localStorage.setItem("presupuesto", value);
       if(value === '' || value <= 0){
@@ -32,12 +29,10 @@ class UI {
         }, 3000);
       } else {
         this.presupuestoMonto.textContent = localStorage.getItem("presupuesto");
-        // this.presupuestoMonto.textContent = value;
         this.presupuestoInput.value = '';
         this.mostrarBalance();
-
+        //Toastr notification
         Command: toastr["success"]("Presupuesto agregado", "Notificación")
-
         toastr.options = {
           "closeButton": false,
           "debug": false,
@@ -56,8 +51,6 @@ class UI {
           "hideMethod": "fadeOut"
         }
       }
-
-      
   }
 
   // Mostrar el balance total hasta el momento.
@@ -75,7 +68,6 @@ class UI {
       this.balance.classList.remove('showRed', 'showGreen');
       this.balance.classList.add('showBlack');
     }
-    
   }
   
   // Enviar el Gasto desde el Formulario Gasto en caso de que no de error por numero negativo o este vacio.
@@ -90,51 +82,41 @@ class UI {
         self.gastoError.classList.remove('showItem');
       }, 3000)
     } else {
-
-
-      
       let amount = parseInt(amountValue);
       this.gastoInput.value = '';
       this.montoInput.value = '';
-
-
-
       let gasto = {
         id: this.itemID,
         title: gastoValue,
         amount: amount
       };
-
       this.itemID++;
       this.itemList.push(gasto);
       this.addGasto(gasto);
       this.mostrarBalance();
-
+      //Toastr notificacion
       Command: toastr["error"]("Gasto agregado", "Notificación")
-
-    toastr.options = {
-      "closeButton": false,
-      "debug": false,
-      "newestOnTop": false,
-      "progressBar": false,
-      "positionClass": "toast-bottom-right",
-      "preventDuplicates": false,
-      "onclick": null,
-      "showDuration": "300",
-      "hideDuration": "1000",
-      "timeOut": "5000",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    }
-      
-
-      
+      toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
     }
   }
 
+  //LocalStorage - Backup
   backup(storedItemList, presupuesto){
     if(storedItemList != null){
       for(const aux of storedItemList){
@@ -142,27 +124,18 @@ class UI {
         this.itemList.push(aux);
         this.addGasto(aux);
       }
-
       this.totalGasto();
-
     }
-
     this.presupuestoMonto.textContent = presupuesto == null? 0 : presupuesto;
-
     this.totalGasto();
-
     this.mostrarBalance();
   }
 
-
   // Agregar Gasto a la lista.
   addGasto(gasto){
-
-    //ALMACENO EN LOCALSTORAGE LOS GASTOS QUE SE VAN AGREGANDO A LA LISTA Y LOS CONVIERTO
+    //Se almacenan los gatos en el localstorage
     localStorage.setItem("gastos", JSON.stringify(this.itemList));
-    
     this.itemList = JSON.parse(localStorage.getItem("gastos"));
-
     const div = document.createElement('div');
     div.classList.add('gasto');
     div.innerHTML = `<div class="gasto-item d-flex justify-content-between align-items-baseline">
@@ -186,7 +159,6 @@ class UI {
   // Calcular el Total del gasto
   totalGasto(){
     let total = 0;
-    
     if(this.itemList.length > 0){
       total = this.itemList.reduce(function(acc, curr){
         acc += curr.amount;
@@ -230,21 +202,16 @@ class UI {
     })
     this.itemList = tempList;
     this.mostrarBalance();
-
     const storage = JSON.parse(localStorage.getItem("gastos"));
-
     const nuevaLista = [];
-
     storage.forEach((e) => {
         if(e.id != id)
           nuevaLista.push(e);
     })
-
     localStorage.removeItem("gastos");
     localStorage.setItem("gastos", JSON.stringify(nuevaLista));
-
+    //Toastr notificacion
     Command: toastr["error"]("Borrado", "Notificación")
-
     toastr.options = {
       "closeButton": false,
       "debug": false,
@@ -269,10 +236,8 @@ function eventListeners(){
   const presupuestoForm = document.getElementById('presupuesto-form');
   const gastoForm = document.getElementById('gasto-form');
   const gastoList = document.getElementById('gasto-list');
-
   //Nueva instancia de UI Class (Constructor en line #1)
   const ui = new UI();
-  
   // Presupuesto Form submit
   presupuestoForm.addEventListener('submit', function(event){
     event.preventDefault();
@@ -282,7 +247,6 @@ function eventListeners(){
   gastoForm.addEventListener('submit', function(event){
     event.preventDefault();
     ui.enviarGastoForm();
-
   })
   //Gasto list submit
   gastoList.addEventListener('click', function(event){
@@ -293,17 +257,13 @@ function eventListeners(){
     }
   })
 }
-
 document.addEventListener('DOMContentLoaded', function(){
   eventListeners();
 })
 
 // Limpiar Storage, mediante Sweet Alert
-
 const btnBorrar = document.getElementById("borrarStorage");
-
 btnBorrar.addEventListener('click', () => {
-  
   Swal.fire({
     title: "Está seguro de eliminar el producto?",
     icon: "warning",
@@ -312,7 +272,6 @@ btnBorrar.addEventListener('click', () => {
     cancelButtonText: "No, no quiero",
   }).then((result) => {
     if (result.isConfirmed) {
-
       localStorage.clear();
       Swal.fire({
         title: "Borrado!",
@@ -326,9 +285,7 @@ btnBorrar.addEventListener('click', () => {
 })
 
 // FETCH
-
 var contenido = document.querySelector('#contenido')
-
         function traer() {
             fetch('./../data/historial.json')
                 .then(res => res.json())
@@ -355,8 +312,6 @@ var contenido = document.querySelector('#contenido')
         }
 
 // Verificar Storage
-
 const storedItemList = localStorage.getItem("gastos");
 const presupuesto = localStorage.getItem("presupuesto");
-
 new UI().backup(JSON.parse(storedItemList), presupuesto);
